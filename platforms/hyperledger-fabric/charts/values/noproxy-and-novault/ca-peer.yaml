@@ -2,7 +2,7 @@
 global:
   serviceAccountName: vault-auth
   cluster:
-    provider: azure
+    provider: minikube
     cloudNativeServices: false
   vault:
     type: kubernetes
