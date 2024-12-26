@@ -26,9 +26,9 @@ spec:
       vault:
         type: hashicorp
         network: fabric
-        address: http://127.0.0.1:8200
+        address: http://0.0.0.0:8200
         authPath: devcarrier
-        secretEngine: my/path
+        secretEngine: /opt/vault/data
         secretPrefix: "data/devcarrier"
         role: vault-role
         tls: false
