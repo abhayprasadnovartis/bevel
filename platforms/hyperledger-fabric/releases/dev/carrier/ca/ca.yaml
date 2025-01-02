@@ -28,7 +28,7 @@ spec:
         network: fabric
         address: http://192.168.49.1:8200
         authPath: devcarrier
-        secretEngine: /opt/vault/data
+        secretEngine: opt/vault/data
         secretPrefix: "data/devcarrier"
         role: vault-role
         tls: false
