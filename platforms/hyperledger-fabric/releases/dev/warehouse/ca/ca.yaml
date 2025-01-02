@@ -28,7 +28,7 @@ spec:
         network: fabric
         address: http://192.168.49.1:8200
         authPath: devwarehouse
-        secretEngine: /opt/vault/data
+        secretEngine: opt/vault/data
         secretPrefix: "data/devwarehouse"
         role: vault-role
         tls: false
