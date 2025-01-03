@@ -8,9 +8,8 @@
 # This tasks ensures the directory existance and registers the result essential for idempotence test
 - name: "check if dir exists or not"
   stat:
-    path: "{{ path }}"
+    path: ""
   register: dir_check
-  when: (org is defined and org.gitops is defined and org.gitops.component_dir is defined)
 
 # Check if directory is created
 # This task creates the directory
