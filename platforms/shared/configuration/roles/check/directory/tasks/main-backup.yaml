@@ -10,7 +10,6 @@
   stat:
     path: "{{ path }}"
   register: dir_check
-  when: (org is defined and org.gitops is defined and org.gitops.component_dir is defined)
 
 # Check if directory is created
 # This task creates the directory
