@@ -28,7 +28,7 @@ spec:
         network: fabric
         address: http://100.90.5.11:8200
         authPath: devsupplychain
-        secretEngine: opt/vault/data
+        secretEngine: opt/vault
         secretPrefix: "data/devsupplychain"
         role: vault-role
         tls: false
@@ -37,7 +37,7 @@ spec:
         externalUrlSuffix: org1proxy.blockchaincloudpoc.com
 
     storage:
-      enabled: False
+      enabled: True
       peer: 512Mi
       couchdb: 512Mi
       reclaimPolicy: "Delete" 
