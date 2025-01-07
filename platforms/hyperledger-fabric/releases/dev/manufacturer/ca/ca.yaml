@@ -28,7 +28,7 @@ spec:
         network: fabric
         address: http://100.90.5.11:8200
         authPath: devmanufacturer
-        secretEngine: opt/vault/data
+        secretEngine: opt/vault
         secretPrefix: "data/devmanufacturer"
         role: vault-role
         tls: false
