@@ -28,7 +28,7 @@ spec:
         network: fabric
         address: http://100.90.5.11:8200
         authPath: devcarrier
-        secretEngine: opt/vault/data
+        secretEngine: opt/vault
         secretPrefix: "data/devcarrier"
         role: vault-role
         tls: false
@@ -37,7 +37,7 @@ spec:
         externalUrlSuffix: org3proxy.blockchaincloudpoc.com
 
     storage:
-      enabled: False
+      enabled: True
       peer: 512Mi
       couchdb: 512Mi
       reclaimPolicy: "Delete" 
@@ -60,7 +60,7 @@ spec:
         - {'user': None, 'identity': 'user1', 'attributes': [{'key': 'hf.Revoker', 'value': 'true'}]}
 
       settings:
-        createConfigMaps: False
+        createConfigMaps: True
         refreshCertValue: false
         addPeerValue: false
         removeCertsOnDelete: true
