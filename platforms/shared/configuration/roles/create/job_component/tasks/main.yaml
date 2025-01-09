@@ -51,6 +51,16 @@
   debug:
     msg: "The values_file is: {{ values_file }}"
 
+- name: Add Helm stable repository
+  kubernetes.core.helm_repository:
+    name: stable
+    url: "https://charts.helm.sh/stable"
+  register: helm_repo
+
+- name: Update Helm repositories
+  kubernetes.core.helm:
+    command: repo update
+  when: helm_repo.changed
 
 # Run helm install 
 - name: Helm install {{ component_name }}
