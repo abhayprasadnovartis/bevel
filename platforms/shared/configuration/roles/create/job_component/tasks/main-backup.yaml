@@ -35,14 +35,6 @@
     kubeconfig: "{{ kubernetes.config_file }}"
   register: helm_check
 
-- name: Set chart_ref variable
-  set_fact:
-    chart_ref: "{{ playbook_dir }}/../../../{{ charts_dir }}/{{ charts[type] }}"
-
-- name: Print the value of chart_ref
-  debug:
-    msg: "The chart_ref is: {{ chart_ref }}"
-
 # Run helm install 
 - name: Helm install {{ component_name }}
   kubernetes.core.helm:
