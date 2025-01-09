@@ -59,6 +59,8 @@
 
 - name: Update Helm repositories
   kubernetes.core.helm:
+    release_name: "{{ component_name }}"
+    release_namespace: "{{ component_ns }}"
     command: repo update
   when: helm_repo.changed
 
