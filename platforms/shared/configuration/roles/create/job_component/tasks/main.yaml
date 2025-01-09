@@ -51,12 +51,6 @@
   debug:
     msg: "The values_file is: {{ values_file }}"
 
-- name: Add Helm repository for stable charts
-  kubernetes.core.helm_repository:
-    name: stable
-    repo_url: "https://charts.helm.sh/stable"
-    state: present
-
 # Run helm install 
 - name: Helm install {{ component_name }}
   kubernetes.core.helm:
@@ -67,7 +61,7 @@
       - "{{ values_dir }}/{{ component_name }}.yaml"
     force: true
     wait: true
-    update_repo_cache: true
+    update_repo_cache: false
     kubeconfig: "{{ kubernetes.config_file }}"
   when:
     - helm_check.status is not defined
