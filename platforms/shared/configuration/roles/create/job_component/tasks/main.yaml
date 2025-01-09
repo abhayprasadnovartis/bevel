@@ -43,6 +43,15 @@
   debug:
     msg: "The chart_ref is: {{ chart_ref }}"
 
+- name: Set values_files variable
+  set_fact:
+    values_file: "{{ values_dir }}/{{ component_name }}.yaml"
+
+- name: Print the value of values_file
+  debug:
+    msg: "The values_file is: {{ values_file }}"
+
+
 # Run helm install 
 - name: Helm install {{ component_name }}
   kubernetes.core.helm:
