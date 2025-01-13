@@ -61,7 +61,7 @@
       - "{{ values_dir }}/{{ component_name }}.yaml"
     force: true
     wait: true
-    timeout: 200s
+    timeout: 600s
     update_repo_cache: false
     kubeconfig: "{{ kubernetes.config_file }}"
   when:
