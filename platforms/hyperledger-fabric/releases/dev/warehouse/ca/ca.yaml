@@ -34,7 +34,7 @@ spec:
         tls: false
       proxy:
         provider: none
-        externalUrlSuffix: org4proxy.blockchaincloudpoc.com
+        externalUrlSuffix: org5proxy.blockchaincloudpoc.com
 
     storage:
       size: 512Mi
