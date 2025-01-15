@@ -26,15 +26,15 @@ spec:
       vault:
         type: hashicorp
         network: fabric
-        address: http://192.168.49.1:8200
+        address: http://100.90.5.11:8200
         authPath: devwarehouse
-        secretEngine: opt/vault/data
+        secretEngine: opt/vault
         secretPrefix: "data/devwarehouse"
         role: vault-role
         tls: false
       proxy:
         provider: none
-        externalUrlSuffix: org5proxy.blockchaincloudpoc.com
+        externalUrlSuffix: org4proxy.blockchaincloudpoc.com
 
     storage:
       size: 512Mi
