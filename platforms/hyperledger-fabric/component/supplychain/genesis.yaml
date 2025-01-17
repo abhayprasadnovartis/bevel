@@ -61,10 +61,10 @@ channels:
       - manufacturer
 
 settings:
-  generateGenesis: True 
+  generateGenesis: False 
   removeConfigMapOnDelete: false
 
-add_new_org: false
+add_new_org: true
 newOrgs:
   - name: supplychain
   - name: manufacturer
