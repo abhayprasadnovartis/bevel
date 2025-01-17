@@ -13,59 +13,24 @@ global:
     secretPrefix: "data/devsupplychain"
     role: vault-role
     tls: false
-  proxy:
-    provider: none
-    externalUrlSuffix: org1proxy.blockchaincloudpoc.com
 
 image:
-  alpineUtils: ghcr.io/hyperledger/bevel-alpine:latest
   fabricTools: ghcr.io/hyperledger/bevel-fabric-tools
+  alpineUtils: ghcr.io/hyperledger/bevel-alpine:latest
   pullSecret: regcred
 
-organizations:
-  - name: supplychain
-    orderers:
-    - name: orderer1
-      ordererAddress: orderer1.supplychain-net:7050
-    - name: orderer2
-      ordererAddress: orderer2.supplychain-net:7050
-    - name: orderer3
-      ordererAddress: orderer3.supplychain-net:7050
-    peers:
-    - name: peer0
-      peerAddress: peer0.supplychain-net:7051
-    - name: peer1
-      peerAddress: peer1.supplychain-net:7051
-  - name: manufacturer
-    peers:
-    - name: peer0
-      peerAddress: peer0.manufacturer-net:7051
-  - name: carrier
-    peers:
-    - name: peer0
-      peerAddress: peer0.carrier-net:7051
+peerName: peer0
+storageClass: storage-peer0
+storageSize: 256Mi
+localMspId: supplychainMSP
+tlsStatus: true
+ports:
+  grpc:
+    clusterIpPort: 7051
+ordererAddress: orderer1.supplychain-net:7050
 
-consensus: raft
-
-
-channels:
- 
- 
-  - name: allchannel
-    consortium: SupplyChainConsortium
-    orderers: 
-      - supplychain
-    participants:
-      - carrier
-      - supplychain
-      - manufacturer
-
-settings:
-  generateGenesis: False 
-  removeConfigMapOnDelete: false
-
-add_new_org: true
-newOrgs:
-  - name: supplychain
-  - name: manufacturer
-  - name: carrier
+labels:
+  service:
+    - example1: example2
+  pvc:
+  deployment:
