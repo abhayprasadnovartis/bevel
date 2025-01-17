@@ -21,10 +21,10 @@
   register: existing_cli
 
 # Creeate the value file for creater org first peer
-- name: "start cli"
-  shell: |
-    KUBECONFIG={{ org.k8s.config_file }} helm upgrade --install -f ./build/supplychain/existing_peer_cli_job.yaml peer0-supplychain-cli {{playbook_dir}}/../../../{{org.gitops.chart_source}}/fabric-cli -n supplychain-net
-  when: existing_cli.resources|length == 0
+#- name: "start cli"
+#  shell: |
+#    KUBECONFIG={{ org.k8s.config_file }} helm upgrade --install -f ./build/supplychain/existing_peer_cli_job.yaml peer0-supplychain-cli {{playbook_dir}}/../../../{{org.gitops.chart_source}}/fabric-cli -n supplychain-net
+#  when: existing_cli.resources|length == 0
 
 # Wait for fabric cli
 - name: "Check if fabric cli is present"
