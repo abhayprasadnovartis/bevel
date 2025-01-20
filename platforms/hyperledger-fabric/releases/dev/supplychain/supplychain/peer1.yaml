@@ -37,7 +37,7 @@ spec:
         externalUrlSuffix: org1proxy.blockchaincloudpoc.com
 
     storage:
-      enabled: True
+      enabled: False
       peer: 512Mi
       couchdb: 512Mi
       reclaimPolicy: "Delete" 
@@ -59,7 +59,7 @@ spec:
       settings:
         createConfigMaps: False
         refreshCertValue: false
-        addPeerValue: false
+        addPeerValue: true
         removeCertsOnDelete: true
         removeOrdererTlsOnDelete: true
 
