@@ -44,10 +44,6 @@ organizations:
     peers:
     - name: peer0
       peerAddress: peer0.carrier-net:7051
-  - name: warehouse
-    peers:
-    - name: peer0
-      peerAddress: peer0.warehouse-net:7051
 
 consensus: raft
 
@@ -62,13 +58,14 @@ channels:
     participants:
       - carrier
       - supplychain
-      - warehouse
       - manufacturer
 
 settings:
-  generateGenesis: False 
+  generateGenesis: True 
   removeConfigMapOnDelete: false
 
-add_new_org: true
+add_new_org: false
 newOrgs:
-  - name: warehouse
+  - name: supplychain
+  - name: manufacturer
+  - name: carrier
