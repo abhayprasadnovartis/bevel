@@ -1,13 +1,13 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: peer0
+  name: peer1
   namespace: warehouse-net
   annotations:
     fluxcd.io/automated: "false"
 spec:
   interval: 1m
-  releaseName: peer0
+  releaseName: peer1
   chart:
     spec:
       interval: 1m
@@ -73,7 +73,7 @@ spec:
       pullSecret: regcred
 
     peer:
-      gossipPeerAddress: peer0.warehouse-net:7051
+      gossipPeerAddress: peer1.warehouse-net:7051
       logLevel: info
       localMspId: warehouseMSP
       tlsStatus: true
