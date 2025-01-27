@@ -26,13 +26,6 @@
         namespace: "{{ namespace }}"
       spec:
         replicas: 0
-        selector:
-          matchLabels:
-            app: "{{ component_name }}"  # This needs to match the labels of the pods
-        template:
-          metadata:
-            labels:
-              app: "{{ component_name }}"  # Labels must match the selector
 
 
 - name: "Delete pod {{ component_name }} in {{ namespace }}"
