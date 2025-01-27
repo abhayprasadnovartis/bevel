@@ -9,7 +9,7 @@
 # This task will try for a maximum of 10 times with an interval of
 # 60 seconds between each try
 - name: "Delete pod {{ component_name }} in {{ namespace }}"
-  k8s_info:
+  k8s:
     state: absent
     kind: "Pod"
     namespace: "{{ namespace }}"
