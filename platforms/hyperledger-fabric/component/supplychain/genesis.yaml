@@ -51,18 +51,21 @@ consensus: raft
 channels:
  
  
- 
-  - name: channeltwo
+  - name: allchannel
     consortium: SupplyChainConsortium
     orderers: 
       - supplychain
     participants:
       - carrier
+      - supplychain
       - manufacturer
 
 settings:
-  generateGenesis: False 
+  generateGenesis: True 
   removeConfigMapOnDelete: false
 
 add_new_org: false
 newOrgs:
+  - name: supplychain
+  - name: manufacturer
+  - name: carrier
