@@ -1,0 +1,22 @@
+##############################################################################################
+#  Copyright Accenture. All Rights Reserved.
+#
+#  SPDX-License-Identifier: Apache-2.0
+##############################################################################################
+
+---
+# Task to check if Pod is terminated
+# This task will try for a maximum of 10 times with an interval of
+# 60 seconds between each try
+- name: "Delete pod {{ component_name }} in {{ namespace }}"
+  k8s_info:
+    state: absent
+    kind: "Pod"
+    namespace: "{{ namespace }}"
+    kubeconfig: "{{ kubeconfig | default(kubernetes.config_file) }}"
+    context: "{{ context | default(kubernetes.context) }}"
+  register: component_data
+  retries: "{{ network.env.retry_count }}"
+  delay: "{{ delay | default(30) }}"
+  until: component_data.resources|length > 0
+  when: component_type == "Pod"

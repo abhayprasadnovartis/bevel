@@ -1,0 +1,46 @@
+# Remove existing value file for peer 
+- name: Remove existing value file for {{ peer.name }}
+  shell: |
+    rm -f {{ values_dir }}/{{ org.name | lower }}/values-{{ peer.name }}.yaml
+  when: 
+    - remove_peer is not defined or remove_peer == 'false'
+
+#Fetch the custom core.yaml
+- name: Fetch the custom core.yaml
+  shell: |
+    cat {{ peer.configpath }} > {{playbook_dir}}/../../../{{ charts_dir }}/fabric-peernode/conf/default_core.yaml
+  register: core_yaml_file
+  when: 
+    - peer.configpath is defined
+
+# Set Variable sc_name
+- name: "Set Variable sc_name"
+  set_fact:
+    sc_name: "storage-{{ peer.name }}"
+ 
+- name: Get information about StorageClasses
+  kubernetes.core.k8s_info:
+    kind: StorageClass
+    api_version: storage.k8s.io/v1
+    namespace: default
+  register: storage_classes_info
+
+# Create Value files for Organization Peers
+- name: Create Value files for Organization Peers
+  include_role:
+    name: helm_component
+  vars:
+    name: "{{ org.name | lower }}"
+    type: "value_peer"
+    component_name: "{{ peer.name }}"
+    component_subject: "{{ org.subject }}"
+    component_ns: "{{ namespace }}"
+    provider: "{{ org.cloud_provider }}"
+    orderer: "{{ network.orderers | first }}"
+    user_list: "{{ org.users | default('') }}"
+    add_peer_value: "{{ add_peer | default('false') }}"
+    enabled_cli: "{{ true if peer.cli == 'enabled' else false }}"
+    sc_enabled: "{{ false if storage_classes_info.resources | selectattr('metadata.name', 'equalto', sc_name) | list else true }}"
+    create_configmaps: "{{ true if (first_peer == peer.name) and (crypto_scripts_data.resources | length == 0) else false }}"
+  when: 
+    - peer.peerstatus is not defined or peer.peerstatus == 'delete'
