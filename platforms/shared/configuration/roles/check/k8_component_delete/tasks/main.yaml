@@ -8,6 +8,20 @@
 # Task to check if Pod is terminated
 # This task will try for a maximum of 10 times with an interval of
 # 60 seconds between each try
+
+- name: "Delete job {{ component_name }} in {{ namespace }}"
+  k8s:
+    state: absent
+    kind: "Job"
+    namespace: "{{ namespace }}"
+    kubeconfig: "{{ kubernetes.config_file }}"
+    context: "{{ kubernetes.context }}"
+    label_selectors:
+      - "app={{ component_name }}"
+  delay: 30      
+  when: component_type == "Job"
+
+
 - name: "Delete pod {{ component_name }} in {{ namespace }}"
   k8s:
     state: absent
