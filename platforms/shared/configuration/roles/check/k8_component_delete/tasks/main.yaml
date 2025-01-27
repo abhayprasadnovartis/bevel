@@ -15,6 +15,7 @@
     namespace: "{{ namespace }}"
     kubeconfig: "{{ kubeconfig | default(kubernetes.config_file) }}"
     context: "{{ context | default(kubernetes.context) }}"
+    label_selectors: "{{ label_selectors }}"
   register: component_data
   retries: "{{ network.env.retry_count }}"
   delay: "{{ delay | default(30) }}"
