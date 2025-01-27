@@ -19,5 +19,19 @@
   register: component_data
   retries: "{{ network.env.retry_count }}"
   delay: "{{ delay | default(30) }}"
-  until: component_data.resources|length > 0
+  until: component_data.changed == true
   when: component_type == "Pod"
+
+- name: "Verify the pod is deleted"
+  k8s_info:
+    kind: Pod
+    namespace: "{{ namespace }}"
+    kubeconfig: "{{ kubeconfig | default(kubernetes.config_file) }}"
+    context: "{{ context | default(kubernetes.context) }}"
+    label_selectors: "{{ label_selectors }}"
+  register: verify_data
+  retries: "{{ network.env.retry_count }}"
+  delay: "{{ delay | default(30) }}"
+  until: verify_data.resources | length == 0
+  when: component_type == "Pod"
+
