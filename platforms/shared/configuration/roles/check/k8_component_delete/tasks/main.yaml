@@ -9,17 +9,15 @@
 # This task will try for a maximum of 10 times with an interval of
 # 60 seconds between each try
 
-- name: "Delete job {{ component_name }} in {{ namespace }}"
+- name: "Scale down the StatefulSet to 0 replicas"
   k8s:
-    state: absent
-    kind: "Job"
+    state: present
+    kind: StatefulSet
+    name: "{{ component_name }}"  # assuming the component_name is the name of the StatefulSet
     namespace: "{{ namespace }}"
-    kubeconfig: "{{ kubernetes.config_file }}"
-    context: "{{ kubernetes.context }}"
-    label_selectors:
-      - "app={{ component_name }}"
-  delay: 30      
-  when: component_type == "Job"
+    replicas: 0
+    kubeconfig: "{{ kubeconfig | default(kubernetes.config_file) }}"
+    context: "{{ context | default(kubernetes.context) }}"
 
 
 - name: "Delete pod {{ component_name }} in {{ namespace }}"
@@ -49,3 +47,13 @@
   until: verify_data.resources | length == 0
   when: component_type == "Pod"
 
+- name: "Scale up the StatefulSet back to original replica count"
+  k8s:
+    state: present
+    kind: StatefulSet
+    name: "{{ component_name }}"  # assuming the component_name is the name of the StatefulSet
+    namespace: "{{ namespace }}"
+    replicas: "{{ original_replica_count }}"  # replace with the original replica count you want
+    kubeconfig: "{{ kubeconfig | default(kubernetes.config_file) }}"
+    context: "{{ context | default(kubernetes.context) }}"
+    
