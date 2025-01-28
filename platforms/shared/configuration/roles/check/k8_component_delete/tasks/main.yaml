@@ -51,4 +51,3 @@
       retries: 3
       delay: 10
       until: pod_verification.resources | length == 0
-
