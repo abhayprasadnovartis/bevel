@@ -10,7 +10,6 @@
 # 60 seconds between each try
 
 - name: Delete pod controlled by StatefulSet
-  hosts: localhost
   tasks:
     - name: Scale down StatefulSet to 0 replicas
       kubernetes.core.k8s:
