@@ -9,121 +9,47 @@
 # This task will try for a maximum of 10 times with an interval of
 # 60 seconds between each try
 
-- name: Scale down deployments, replicasets, and statefulset
+- name: Delete pod controlled by StatefulSet
   hosts: localhost
   gather_facts: no
   tasks:
-
-    - name: Scale down peer1-cli deployment to 0 replicas
-      kubernetes.core.k8s:
-        state: present
-        kind: Deployment
-        name: peer1-cli
-        namespace: warehouse-net
-        replicas: 0
-        kubeconfig: "{{ kubeconfig | default(kubernetes.config_file) }}"
-        context: "{{ context | default(kubernetes.context) }}"
-      register: peer1_cli_scale
-      retries: 3
-      delay: 10
-      until: peer1_cli_scale.changed
-
-    - name: Delete peer1-cli replicaset
-      kubernetes.core.k8s:
-        state: absent
-        kind: ReplicaSet
-        name: peer1-cli-{{ peer1_cli_scale.resources[0].metadata.labels.revision }}
-        namespace: warehouse-net
-        kubeconfig: "{{ kubeconfig | default(kubernetes.config_file) }}"
-        context: "{{ context | default(kubernetes.context) }}"
-      when: peer1_cli_scale.changed
-
-    - name: Scale down peer1 statefulset to 0 replicas
+    - name: Scale down StatefulSet to 0 replicas
       kubernetes.core.k8s:
         state: present
         kind: StatefulSet
-        name: peer1
+        name: fabric-peernode-peer1
         namespace: warehouse-net
         replicas: 0
         kubeconfig: "{{ kubeconfig | default(kubernetes.config_file) }}"
         context: "{{ context | default(kubernetes.context) }}"
-      register: peer1_statefulset_scale
+      register: statefulset_scaledown
       retries: 3
       delay: 10
-      until: peer1_statefulset_scale.changed
+      until: statefulset_scaledown.changed
 
-    - name: Check if PodDisruptionBudget exists
-      kubernetes.core.k8s_info:
-        kind: PodDisruptionBudget
-        namespace: warehouse-net
-        kubeconfig: "{{ kubeconfig | default(kubernetes.config_file) }}"
-        context: "{{ context | default(kubernetes.context) }}"
-      register: pdb_info
-      retries: 3
-      delay: 10
-
-    - name: Delete PodDisruptionBudget if exists
+    - name: Delete the pod fabric-peernode-peer1-0
       kubernetes.core.k8s:
         state: absent
-        kind: PodDisruptionBudget
-        name: "{{ item.metadata.name }}"
+        kind: Pod
+        name: fabric-peernode-peer1-0
         namespace: warehouse-net
         kubeconfig: "{{ kubeconfig | default(kubernetes.config_file) }}"
         context: "{{ context | default(kubernetes.context) }}"
-      loop: "{{ pdb_info.resources }}"
-      when: pdb_info.resources | length > 0
-      register: pdb_delete
+      register: pod_deleted
+      retries: 3
+      delay: 10
+      until: pod_deleted.changed
 
-    - name: Verify statefulset pods are deleted
+    - name: Verify the pod is deleted
       kubernetes.core.k8s_info:
         kind: Pod
         namespace: warehouse-net
         kubeconfig: "{{ kubeconfig | default(kubernetes.config_file) }}"
         context: "{{ context | default(kubernetes.context) }}"
         label_selectors:
-          app: peer1
+          app: fabric-peernode-peer1
       register: pod_verification
       retries: 3
       delay: 10
       until: pod_verification.resources | length == 0
 
-    - name: Verify that peer1-cli pods are deleted
-      kubernetes.core.k8s_info:
-        kind: Pod
-        namespace: warehouse-net
-        kubeconfig: "{{ kubeconfig | default(kubernetes.config_file) }}"
-        context: "{{ context | default(kubernetes.context) }}"
-        label_selectors:
-          app: peer1-cli
-      register: peer1_cli_pod_verification
-      retries: 3
-      delay: 10
-      until: peer1_cli_pod_verification.resources | length == 0
-
-    - name: "Delete pod {{ component_name }} in {{ namespace }}"
-      k8s:
-        state: absent
-        kind: "Pod"
-        namespace: "{{ namespace }}"
-        kubeconfig: "{{ kubeconfig | default(kubernetes.config_file) }}"
-        context: "{{ context | default(kubernetes.context) }}"
-        label_selectors: "{{ label_selectors }}"
-      register: component_data
-      retries: "{{ network.env.retry_count }}"
-      delay: "{{ delay | default(30) }}"
-      until: component_data.changed == true
-      when: component_type == "Pod"
-
-    - name: "Verify the pod is deleted"
-      k8s_info:
-        kind: Pod
-        namespace: "{{ namespace }}"
-        kubeconfig: "{{ kubeconfig | default(kubernetes.config_file) }}"
-        context: "{{ context | default(kubernetes.context) }}"
-        label_selectors: "{{ label_selectors }}"
-      register: verify_data
-      retries: "{{ network.env.retry_count }}"
-      delay: "{{ delay | default(30) }}"
-      until: verify_data.resources | length == 0
-      when: component_type == "Pod"
-    
