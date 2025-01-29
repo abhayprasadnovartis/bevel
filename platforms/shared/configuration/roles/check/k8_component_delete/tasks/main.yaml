@@ -29,8 +29,8 @@
       kubernetes.core.k8s:
         state: absent
         kind: Pod
-        name: fabric-peernode-peer1-0
-        namespace: warehouse-net
+        name: "fabric-peernode-peer1-0"
+        namespace: "warehouse-net"
         kubeconfig: "{{ kubeconfig | default(kubernetes.config_file) }}"
         context: "{{ context | default(kubernetes.context) }}"
       register: pod_deleted
