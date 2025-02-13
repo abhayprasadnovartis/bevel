@@ -14,7 +14,7 @@ global:
   #Provide the service account name which will be created.
   serviceAccountName: vault-auth
   cluster:
-    provider: aws # choose from: minikube | aws | azure | gcp
+    provider: minikube # choose from: minikube | aws | azure | gcp
     cloudNativeServices: false # only 'false' is implemented
 
   vault:

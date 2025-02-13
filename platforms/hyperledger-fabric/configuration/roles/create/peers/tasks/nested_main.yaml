@@ -36,7 +36,7 @@
     name: "orderer-tls-cacert"
     namespace: "{{ org.orderer_org | lower }}-net"
   register: tls_cert_data
-  when: org.orderer_org != org.name
+  when: (org is defined and org.orderer_org is defined and org.orderer_org != org.name)
 
 - name: Create new ConfigMap with tls_cert_data
   kubernetes.core.k8s:
@@ -49,7 +49,7 @@
         namespace: "{{ org.name | lower }}-net"
       data:
         cacert: "{{ tls_cert_data.resources[0].data['cacert'] }}"
-  when: org.orderer_org != org.name
+  when: (org is defined and org.orderer_org is defined and org.orderer_org != org.name)
 
 # Set Variable sc_name
 - name: "Set Variable sc_name"
