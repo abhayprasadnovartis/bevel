@@ -7,7 +7,7 @@ global:
   vault:
     type: hashicorp
     network: fabric
-    address: http://100.26.249.251:8200
+    address: http://107.22.141.234:8200
     authPath: devsupplychain
     secretEngine: opt/vault
     secretPrefix: "data/devsupplychain"
@@ -32,4 +32,4 @@ peer:
   channelName: allchannel  
   ordererAddress: orderer1.supplychain-net:7050
   addPeerValue: false
-  addnewOrgValue: true
+  addnewOrgValue: false
