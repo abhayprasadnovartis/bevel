@@ -7,7 +7,7 @@ global:
   vault:
     type: hashicorp
     network: fabric
-    address: http://100.26.249.251:8200
+    address: http://107.22.141.234:8200
     authPath: devsupplychain
     secretEngine: opt/vault
     secretPrefix: "data/devsupplychain"
@@ -51,18 +51,21 @@ consensus: raft
 channels:
  
  
- 
-  - name: channeltwo
+  - name: allchannel
     consortium: SupplyChainConsortium
     orderers: 
       - supplychain
     participants:
       - carrier
+      - supplychain
       - manufacturer
 
 settings:
-  generateGenesis: False 
+  generateGenesis: True 
   removeConfigMapOnDelete: false
 
 add_new_org: false
 newOrgs:
+  - name: supplychain
+  - name: manufacturer
+  - name: carrier
